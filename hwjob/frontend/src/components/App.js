@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { render } from "react-dom";
-
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>This is the App.js</h1>
-      </div>
-    );
-  }
-}
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SearchPage from "./SearchPage";
+import ConsumptionPage from "./ConsumptionPage";
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<SearchPage />} />
+        <Route path="/consumption/:id" element={<ConsumptionPage />} />
+      </Routes>
+    </Router>
+  );
+};
 
 const appDiv = document.getElementById("app");
-render(<App />, appDiv);
+const root = createRoot(appDiv);
+root.render(<App />);

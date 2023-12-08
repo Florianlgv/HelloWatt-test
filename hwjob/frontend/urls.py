@@ -4,5 +4,5 @@ from .views import index
 app_name = "frontend"
 urlpatterns = [
     path("", index),
-    path("dashboard", index),
+    path("consumption/<int:id>", index),
 ]
