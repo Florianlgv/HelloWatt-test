@@ -63,7 +63,7 @@ class Client(models.Model):
 
             return malfunction_months
         except statistics.StatisticsError:
-            return None
+            return []
 
     def calculate_average_consumption(self, months):
         consumptions = self.get_last_12_months_consumption()
