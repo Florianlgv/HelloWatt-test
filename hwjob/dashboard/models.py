@@ -1,6 +1,7 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
+import statistics
 
 
 class MonthMixin(models.Model):
@@ -18,6 +19,58 @@ class Client(models.Model):
 
     def __str__(self):
         return f"Client {self.pk}"
+
+    def get_last_12_months_consumption(self):
+        return Consumption.objects.filter(client=self).order_by(
+            "-year", "-month"
+        )[:12:-1]
+
+    def has_elec_heating(self):
+        try:
+            winter_months = [1, 2, 12]
+            non_winter_months = list(range(3, 12))
+            winter_consumption = self.calculate_average_consumption(
+                winter_months
+            )
+            non_winter_consumption = self.calculate_average_consumption(
+                non_winter_months
+            )
+
+            augmentation_rate_hiver = 1.4
+            return (
+                winter_consumption
+                > augmentation_rate_hiver * non_winter_consumption
+            )
+        except statistics.StatisticsError:
+            return False
+
+    def has_anomaly(self):
+        try:
+            consumptions = self.get_last_12_months_consumption()
+            monthly_consumptions = [
+                consumption.kwh_consumed for consumption in consumptions
+            ]
+
+            avg_consumption = statistics.mean(monthly_consumptions)
+            std_dev = statistics.stdev(monthly_consumptions)
+
+            malfunction_months = [
+                monthly_consumptions.index(consumption.kwh_consumed)
+                for consumption in consumptions
+                if abs(consumption.kwh_consumed - avg_consumption)
+                > 2 * std_dev
+            ]
+
+            return malfunction_months
+        except statistics.StatisticsError:
+            return None
+
+    def calculate_average_consumption(self, months):
+        consumptions = self.get_last_12_months_consumption()
+        seasonal_consumption = [
+            c.kwh_consumed for c in consumptions if c.month in months
+        ]
+        return statistics.mean(seasonal_consumption)
 
 
 class Consumption(MonthMixin):
@@ -39,7 +92,7 @@ class Consumption(MonthMixin):
         return f"Conso of {self.client} ({self.month}/{self.year}): {self.kwh_consumed}"
 
     def get_absolute_url(self):
-        return reverse("dashboard:consumption_details", kwargs={"client_id": self.pk})
+        return f"/consumption/{self.pk}"
 
 
 class ElectricityPrice(MonthMixin):
