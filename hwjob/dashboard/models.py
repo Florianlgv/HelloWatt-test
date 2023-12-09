@@ -43,10 +43,10 @@ class Client(models.Model):
                 non_winter_months
             )
 
-            augmentation_rate_hiver = 1.4
+            winter_augmentation_rate = 1.4
             return (
                 winter_consumption
-                > augmentation_rate_hiver * non_winter_consumption
+                > winter_augmentation_rate * non_winter_consumption
             )
         except statistics.StatisticsError:
             return False
