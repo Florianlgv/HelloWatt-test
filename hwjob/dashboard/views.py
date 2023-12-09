@@ -58,10 +58,10 @@ class CheckClientExistView(APIView):
         try:
             client = Client.objects.get(pk=int(search_input))
         except (ValueError, Client.DoesNotExist):
-            clients = Client.objects.filter(
+            client = Client.objects.filter(
                 full_name__icontains=search_input
             ).first()
-            if clients is None:
+            if client is None:
                 return Response({"error": "Client not found"}, status=404)
 
         return Response({"client_id": client.id})
