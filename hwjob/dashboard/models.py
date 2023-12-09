@@ -15,6 +15,10 @@ class MonthMixin(models.Model):
 
 
 class Client(models.Model):
+    """
+    Model representing a client, with methods for analyzing consumption data.
+    """
+
     full_name = models.CharField("full name", max_length=50)
 
     def __str__(self):
@@ -26,6 +30,9 @@ class Client(models.Model):
         )[:12:-1]
 
     def has_elec_heating(self):
+        """
+        Determines if the client uses electric heating based on consumption patterns.
+        """
         try:
             winter_months = [1, 2, 12]
             non_winter_months = list(range(3, 12))
