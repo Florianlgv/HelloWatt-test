@@ -47,3 +47,31 @@
         margin-left: 0.25rem;
     }
 }
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination .step-links {
+    display: inline-block;
+}
+
+.pagination .step-links a {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #1976d2;
+    text-decoration: none;
+}
+
+.pagination .step-links a:hover {
+    border-color: #1976d2;
+}
+
+.pagination .step-links .current {
+    margin: 0 5px;
+    padding: 5px 10px;
+    background: #1976d2;
+    color: white;
+}

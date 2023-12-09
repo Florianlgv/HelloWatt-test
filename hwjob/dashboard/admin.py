@@ -17,6 +17,7 @@ class ClientsListView(ListView):
     queryset = Client.objects.all()
     context_object_name = "clients_list"
     template_name = "dashboard/clients_list.html"
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
