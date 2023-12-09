@@ -13,23 +13,29 @@ export default function SearchBar() {
 	const navigate = useNavigate();
 
 	const checkClientExists = (searchQuery) => {
-		fetch(`/dashboard/check-client/?query=${searchQuery}`)
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error("Network response was not ok");
-				}
-				return response.json();
-			})
-			.then((data) => {
-				if (data.client_id) {
-					return data.client_id;
-				}
-				return null;
-			})
-			.catch((error) => {
-				console.error("Error while checking client existence:", error);
-				return null;
-			});
+		return new Promise((resolve, reject) => {
+			fetch(`/dashboard/check-client/?query=${searchQuery}`)
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error("Network response was not ok");
+					}
+					return response.json();
+				})
+				.then((data) => {
+					if (data.client_id) {
+						resolve(data.client_id);
+					} else {
+						resolve(null);
+					}
+				})
+				.catch((error) => {
+					console.error(
+						"Error while checking client existence:",
+						error
+					);
+					resolve(null);
+				});
+		});
 	};
 
 	const handleSearch = () => {
