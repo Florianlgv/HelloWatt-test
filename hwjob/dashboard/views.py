@@ -1,13 +1,26 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils import timezone
-from dateutil.relativedelta import relativedelta
+
 from .models import Consumption, Client
-from .serializers import ConsumptionSerializer
+from .serializers import ConsumptionSerializer, ClientSerializer
+
+from dateutil.relativedelta import relativedelta
 
 
 class ClientConsumptionDetailView(APIView):
+    """
+    API view to handle requests for a client's consumption details.
+    """
+
     def get(self, request, client_id):
+        """
+        Handle GET request to retrieve consumption details for a given client.
+        Parameters:
+            - request: HttpRequest object
+            - client_id: ID of the client
+        Returns a JSON response with consumption details or error message.
+        """
         try:
             client = Client.objects.get(pk=client_id)
         except Client.DoesNotExist:
@@ -15,32 +28,62 @@ class ClientConsumptionDetailView(APIView):
 
         consumptions = client.get_last_12_months_consumption()
         parsed_consumptions = {
-            "year": {c.year for c in consumptions},
+            "year": {consumptions[0].year, consumptions[-1].year},
             "months": [c.month for c in consumptions],
             "kwh_consumed": [c.kwh_consumed for c in consumptions],
         }
 
         has_heating = client.has_elec_heating()
-        anomaly_index = client.has_anomaly()
+        anomalies_index = client.has_anomaly()
 
         response_data = {
             "consumptions": parsed_consumptions,
             "has_electric_heating": has_heating,
-            "anomalies": anomaly_index,
+            "anomalies_index": anomalies_index,
         }
 
         return Response(response_data)
 
 
-def consumption_view(request, client_id):
-    return render(request, "dashboard/consumption_detail.html")
-
-
-def search_client_view(request):
+class CheckClientExistView(APIView):
     """
-    A list of clients
-
-    TODO client.has_elec_heating should be set
-    TODO client.has_anomaly should be set
+    API view to check if a client exists based on a search query.
     """
-    return render(request, "dashboard/search_client.html")
+
+    def get(self, request, format=None):
+        search_input = request.query_params.get("query", None)
+        if search_input is None:
+            return Response({"error": "No search input provided"}, status=400)
+
+        try:
+            client = Client.objects.get(pk=int(search_input))
+        except (ValueError, Client.DoesNotExist):
+            clients = Client.objects.filter(
+                full_name__icontains=search_input
+            ).first()
+            print(clients)
+            if clients is None:
+                return Response({"error": "Client not found"}, status=404)
+
+        return Response({"client_id": client.id})
+
+
+class SearchClientView(APIView):
+    """
+    API view to search for clients based on a query.
+    """
+
+    def get(self, request, format=None):
+        """
+        Handle GET request to search for clients.
+        Parameters:
+            - request: HttpRequest object
+        Returns a JSON response with a list of clients or an empty list.
+        """
+        search_input = request.query_params.get("query", None)
+        if search_input is None:
+            return Response([])
+
+        clients = Client.objects.filter(full_name__icontains=search_input)[:5]
+        serializer = ClientSerializer(clients, many=True)
+        return Response(serializer.data)
