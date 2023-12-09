@@ -132,3 +132,4 @@ dmypy.json
 
 #node
 **/node_modules/
+.prettierrc
