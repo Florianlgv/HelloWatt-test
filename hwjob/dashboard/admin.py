@@ -9,12 +9,9 @@ from dashboard.models import Client
 class ClientsListView(ListView):
     """
     A list of clients
-
-    TODO client.has_elec_heating should be set
-    TODO client.has_anomaly should be set
     """
 
-    queryset = Client.objects.all()
+    queryset = Client.objects.all().order_by("id")
     context_object_name = "clients_list"
     template_name = "dashboard/clients_list.html"
     paginate_by = 10
