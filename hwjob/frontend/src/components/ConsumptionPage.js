@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Card, CardContent, Typography, Grid, Container } from "@mui/material";
-import { Bar } from "react-chartjs-2";
-import Chart from "chart.js/auto";
+
+import { Card, Typography, Grid, Container, Alert } from "@mui/material";
+
 import ConsumptionChart from "./ConsumptionChart";
 import ElectricIcon from "./ElectricIcon";
-import FlashOnIcon from "@mui/icons-material/FlashOn";
-import FlashOffIcon from "@mui/icons-material/FlashOff";
-import Alert from "@mui/material/Alert";
 
 export default function ConsumptionPage() {
 	const { id } = useParams();
@@ -17,6 +14,7 @@ export default function ConsumptionPage() {
 		anomaliesIndex: [],
 	});
 	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState("");
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -33,7 +31,7 @@ export default function ConsumptionPage() {
 					anomaliesIndex: data.anomalies_index,
 				});
 			} catch (error) {
-				console.error("Fetch error:", error);
+				setError("Error 404 : Client doesn't exist");
 			} finally {
 				setIsLoading(false);
 			}
@@ -41,6 +39,20 @@ export default function ConsumptionPage() {
 
 		fetchData();
 	}, [id]);
+
+	if (isLoading) {
+		return <Typography>Loading...</Typography>;
+	}
+
+	if (error) {
+		return (
+			<Container maxWidth="lg">
+				<Typography textAlign="center" variant="h3">
+					{error}
+				</Typography>
+			</Container>
+		);
+	}
 
 	return (
 		<Container maxWidth="lg" className="center">

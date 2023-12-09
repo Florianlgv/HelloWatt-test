@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-	TextField,
-	InputAdornment,
-	Collapse,
-	Alert,
-	Stack,
-} from "@mui/material";
+
+import { TextField, InputAdornment, Collapse, Alert } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+
 import ClientSuggestionsList from "./ClientSuggestionsList";
 
 export default function SearchBar() {
@@ -16,20 +12,24 @@ export default function SearchBar() {
 	const [clientSuggestions, setClientSuggestions] = useState([]);
 	const navigate = useNavigate();
 
-	const checkClientExists = async (searchQuery) => {
-		try {
-			const response = await fetch(
-				`/dashboard/check-client/?query=${searchQuery}`
-			);
-			const data = await response.json();
-			if (response.ok && data.client_id) {
-				return data.client_id;
-			}
-			return null;
-		} catch (error) {
-			console.error("Error while checking client existence:", error);
-			return null;
-		}
+	const checkClientExists = (searchQuery) => {
+		fetch(`/dashboard/check-client/?query=${searchQuery}`)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Network response was not ok");
+				}
+				return response.json();
+			})
+			.then((data) => {
+				if (data.client_id) {
+					return data.client_id;
+				}
+				return null;
+			})
+			.catch((error) => {
+				console.error("Error while checking client existence:", error);
+				return null;
+			});
 	};
 
 	const handleSearch = () => {
@@ -47,6 +47,7 @@ export default function SearchBar() {
 	const handleCloseAlert = () => {
 		setErrorMsg("");
 	};
+
 	const handleClientSuggestions = (event) => {
 		const value = event.target.value;
 

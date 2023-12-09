@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
 import { List, ListItemButton, ListItemText, Divider } from "@mui/material";
 
 export default function ClientSuggestionsList({ clientSuggestions }) {

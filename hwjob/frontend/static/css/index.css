@@ -11,9 +11,7 @@ html, body {
     top: 0;
 }
 main{
-    background-color: aquamarine;
     width: 100%;
-    height: fit-content;
 }
 header {
     background-color: #165593; /* Couleur de fond */

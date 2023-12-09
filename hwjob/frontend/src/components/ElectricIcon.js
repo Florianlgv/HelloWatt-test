@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Typography, Box } from "@mui/material";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import FlashOffIcon from "@mui/icons-material/FlashOff";
@@ -38,7 +39,7 @@ export default function ElectricIcon({ hasElectricHeating }) {
 						variant="h6"
 						style={{ marginLeft: 8 }}
 					>
-						Not electric heating
+						No electric heating
 					</Typography>
 				</>
 			)}

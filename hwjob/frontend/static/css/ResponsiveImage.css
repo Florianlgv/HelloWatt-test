@@ -1,0 +1,6 @@
+.responsiveImage {
+    width: 60%;
+    min-width: 200px;
+    height: auto;
+    object-fit: cover;
+}

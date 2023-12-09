@@ -1,7 +1,9 @@
 import React from "react";
+
+import { Grid, Container } from "@mui/material";
+
 import SearchBar from "./SearchBar";
 import ResponsiveImage from "./ResponsiveImage";
-import { Grid, Container } from "@mui/material";
 
 export default function SearchPage() {
 	return (
