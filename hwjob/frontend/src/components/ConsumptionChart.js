@@ -7,7 +7,9 @@ export default function ConsumptionChart({ deviceData, consumptionsData }) {
 
 	const barColors = consumptionsData.kwh_consumed
 		? consumptionsData.kwh_consumed.map((_, index) =>
-				deviceData.anomaly.includes(index) ? "#ea4258" : "#00B0F4"
+				deviceData.anomaliesIndex.includes(index)
+					? "#ea4258"
+					: "#00B0F4"
 		  )
 		: "#00B0F4";
 

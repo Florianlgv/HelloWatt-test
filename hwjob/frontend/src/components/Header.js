@@ -10,32 +10,30 @@ import MenuIcon from "@mui/icons-material/Menu";
 const Header = () => {
 	return (
 		<AppBar position="static">
-			<Toolbar>
-				<nav
-					style={{
-						margin: "0 10%",
-						width: "100%",
-						display: "flex",
-						justifyContent: "space-between",
-						alignItems: "center",
+			<Toolbar
+				component="nav"
+				style={{
+					padding: "0 10%",
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
+				}}
+			>
+				<Typography
+					component="a"
+					href="/"
+					variant="h6"
+					sx={{
+						flexGrow: 0,
+						width: "fit-content",
+						color: "#fff",
 					}}
 				>
-					<Typography
-						component="a"
-						href="/"
-						variant="h6"
-						sx={{
-							flexGrow: 0,
-							width: "fit-content",
-							color: "#fff",
-						}}
-					>
-						Home
-					</Typography>
-					<IconButton sx={{ color: "#fff" }}>
-						<MenuIcon />
-					</IconButton>
-				</nav>
+					Home
+				</Typography>
+				<IconButton sx={{ color: "#fff" }}>
+					<MenuIcon />
+				</IconButton>
 			</Toolbar>
 		</AppBar>
 	);

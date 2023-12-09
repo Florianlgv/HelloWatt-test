@@ -14,7 +14,7 @@ export default function ConsumptionPage() {
 	const [consumptionsData, setConsumptionsData] = useState({});
 	const [deviceData, setDeviceData] = useState({
 		hasElectricHeating: [],
-		anomaly: [],
+		anomaliesIndex: [],
 	});
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -30,7 +30,7 @@ export default function ConsumptionPage() {
 				setConsumptionsData(data.consumptions);
 				setDeviceData({
 					hasElectricHeating: data.has_electric_heating,
-					anomaly: data.anomalies,
+					anomaliesIndex: data.anomalies_index,
 				});
 			} catch (error) {
 				console.error("Fetch error:", error);
@@ -62,7 +62,7 @@ export default function ConsumptionPage() {
 						/>
 					</Grid>
 					<Grid item sm={6} xs={12}>
-						{deviceData.anomaly.length === 0 ? (
+						{deviceData.anomaliesIndex.length === 0 ? (
 							<Alert
 								variant="filled"
 								severity="success"
@@ -76,8 +76,13 @@ export default function ConsumptionPage() {
 								severity="error"
 								sx={{ justifyContent: "center" }}
 							>
-								Anomaly detected on{" "}
-								{consumptionsData.months[deviceData.anomaly]} !
+								Anomaly detected on
+								{
+									consumptionsData.months[
+										deviceData.anomaliesIndex
+									]
+								}
+								!
 							</Alert>
 						)}
 					</Grid>
