@@ -55,12 +55,12 @@ export default function ConsumptionPage() {
 	}
 
 	return (
-		<Container maxWidth="lg" className="center">
+		<Container component="section" maxWidth="lg" className="center">
 			{isLoading ? (
 				<p>Chargement...</p>
 			) : (
 				<Grid container spacing={5} align="center">
-					<Grid item xs={12}>
+					<Grid component="figure" item xs={12}>
 						<Card sx={{ p: 2, minHeight: "150px" }}>
 							<ConsumptionChart
 								consumptionsData={consumptionsData}
@@ -80,7 +80,7 @@ export default function ConsumptionPage() {
 								severity="success"
 								sx={{ justifyContent: "center" }}
 							>
-								Functionning well
+								Working well
 							</Alert>
 						) : (
 							<Alert
@@ -88,12 +88,12 @@ export default function ConsumptionPage() {
 								severity="error"
 								sx={{ justifyContent: "center" }}
 							>
-								Anomaly detected on
+								Anomaly detected on{" "}
 								{
 									consumptionsData.months[
 										deviceData.anomaliesIndex
 									]
-								}
+								}{" "}
 								!
 							</Alert>
 						)}

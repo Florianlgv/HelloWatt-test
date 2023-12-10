@@ -7,7 +7,7 @@ import ResponsiveImage from "./ResponsiveImage";
 
 export default function SearchPage() {
 	return (
-		<Container maxWidth="sm" className="center">
+		<Container component="section" maxWidth="sm" className="center">
 			<Grid component="nav" container spacing={5} alignItems="center">
 				<Grid item xs={12} textAlign="center">
 					<ResponsiveImage
