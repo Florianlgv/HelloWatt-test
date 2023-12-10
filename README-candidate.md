@@ -1,4 +1,4 @@
-#Choix des stacks techniques
+#Choix des stacks techniques#
 Utilisation de react, material-ui pour un front dynamique et responsive
 Frontend: react, M-UI
 Donc backend avec django rest framework pour avoir une Api RESTful car react s'occupe du routage et de la distribution de template
